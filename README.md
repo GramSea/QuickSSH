@@ -4,7 +4,7 @@ An SSH parser that reads .zshrc, .bashrc, .bash_profile and .zshenv for ssh alia
 ## Install
 Install rust
 ```
-git clone https://github.com/GramSea/quick_ssh
+git clone https://github.com/GramSea/QuickSSH.git
 cd quick_ssh
 cargo build --release
 
