@@ -1,5 +1,5 @@
 # Quick SSH
-An SSH parser that reads .zshrc, .bashrc, .bash_profile and .zshenv for ssh aliases and lists them, then allows you to select a connection.
+An SSH parser that reads ssh/config, .zshrc, .bashrc, .bash_profile and .zshenv for ssh aliases and lists them, then allows you to select a connection.
 
 ## Install
 Install rust
