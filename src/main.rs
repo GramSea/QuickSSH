@@ -5,10 +5,10 @@ use qssh::{Server, server_parser, display_servers, connect_to_server};
 
 fn main() {
     let mut args: Vec<String> = env::args().collect();
+    args.remove(0);
     let servers = server_parser();
-    let verbose_check = args.iter().position(|x| x=="-vvv");
 
-    display_servers(&servers, args);
+    display_servers(&servers, args.clone());
 
     let mut line = String::new();
     println!("Enter server number");
@@ -19,7 +19,7 @@ fn main() {
 
     let chosen_server = &servers[server_val];
 
-    connect_to_server(chosen_server, verbose_check);
+    connect_to_server(chosen_server, args);
 
-    println!("Program Complete")
+    println!("QSSH Exit Success")
 }
