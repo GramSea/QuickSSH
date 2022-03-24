@@ -1,7 +1,6 @@
-use std::{env, fs};
-use std::collections::VecDeque;
+use std::env;
 
-use qssh::{Server, server_parser, display_servers, connect_to_server};
+use qssh::{server_parser, display_servers, connect_to_server};
 
 fn main() {
     let mut args: Vec<String> = env::args().collect();

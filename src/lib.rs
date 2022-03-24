@@ -371,7 +371,7 @@ fn set_config_server_values(server: &mut Server, line: String) {
     else if line_lower.contains("xauthlocation"){ server.xauth_location = line }
 }
 
-fn read_ssh_config_file(ssh_cfg_path: String, mut server_index: usize, servers: &mut Vec<Server>){
+fn read_ssh_config_file(ssh_cfg_path: String, servers: &mut Vec<Server>){
     let ssh_config_data = fs::read_to_string(ssh_cfg_path).expect("Unable to read file");
     let mut host_num = 0;
     let mut first_run = true;
@@ -404,10 +404,10 @@ pub fn server_parser() -> Vec<Server> {
         None => panic!("Unable to get home directory")
     };
     let mut servers: Vec<Server> = Vec::new();
-    let mut server_index = 1;
+    let server_index = 1;
 
     let ssh_cfg_path = home_path.to_str().unwrap().to_owned() + "/.ssh/config";
-    read_ssh_config_file(ssh_cfg_path, server_index, &mut servers);
+    read_ssh_config_file(ssh_cfg_path, &mut servers);
 
     let rc_files = vec![".zshrc", ".bashrc", ".bash_profile", ".zshenv"];
 
