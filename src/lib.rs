@@ -251,17 +251,15 @@ impl Default for Server {
 }
 
 //Used to remove the ' or " in a bash alias
-fn rm_first_last_char(value: &str) -> &str {
+fn rm_first_last_char<'a>(value: &'a str, first: bool, last: bool, chars_to_rm: Vec<&str>) -> &'a str {
     let mut chars = value.chars();
-    chars.next();
-    chars.next_back();
-    chars.as_str()
-}
-
-fn rm_leading_tab_char(value: &str) -> &str{
-    let mut chars = value.chars();
-    if value.starts_with("\t") {
-        chars.next();
+    for char in chars_to_rm {
+        if first && value.starts_with(char) {
+            chars.next();
+        }
+        if last && value.ends_with(char) {
+            chars.next_back();
+        }
     }
     chars.as_str()
 }
@@ -276,7 +274,7 @@ fn read_rc_cfg_file(rc_cfg_path: String, mut server_index: usize, servers: &mut 
             if line.contains("alias") && line.contains("ssh") && line.contains("@") && !line.starts_with("#") {
                 let v: Vec<&str> = line.split("=").collect();
                 let alias = v[0].strip_prefix("alias").unwrap().trim().to_string();
-                let no_quotes: &str = rm_first_last_char(v[1]);
+                let no_quotes: &str = rm_first_last_char(v[1], true, true, vec!["\"", "\'"]);
                 let mut args_vec: Vec<String> = no_quotes.split(" ").map(|s| s.to_string()).collect();
                 args_vec.retain(|x| x != "ssh");
                 let hostname_index = args_vec.iter().position(|x| x.contains("@")).unwrap();
@@ -392,7 +390,7 @@ fn read_ssh_config_file(ssh_cfg_path: String, servers: &mut Vec<Server>){
             servers.push( server);
 
         } else {
-            let cleaned_line = rm_leading_tab_char(line);
+            let cleaned_line = rm_first_last_char(line, true, false, vec!["\t"]);
             set_config_server_values(&mut servers[host_num], cleaned_line.to_string());
         }
     }
